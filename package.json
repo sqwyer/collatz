@@ -1,7 +1,7 @@
 {
   "name": "collatz",
   "version": "1.0.0",
-  "main": "set.js",
+  "main": "col.js",
   "author": "Sawyer Bivens",
   "license": "ISC",
   "dependencies": {

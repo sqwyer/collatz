@@ -31,20 +31,21 @@
     //                      --> ...
     // currently: C={1,2,3,4,5,6,7,8,10,12,13,16,20,24,26,40,80,120,160}
     // Q: does repeating this process, starting with n=1, lead to C=N+1?
+    // (in other words) does repeatedly taking the inverse collatz numbers starting at 1 yield all numbers in the set N+1 ?
 
 const prompt = require('prompt-sync')();
 
-/**
- * @param {Number} n
- */
-function doesReach1(n) {
-    if(n!=1) {
-        if(n%2==0) return doesReach1(n/2)
-        else return doesReach1(3*n+1)
-    } else {
-        return true;
-    }
-}
+// /**
+//  * @param {Number} n
+//  */
+// function doesReach1(n) {
+//     if(n!=1) {
+//         if(n%2==0) return doesReach1(n/2)
+//         else return doesReach1(3*n+1)
+//     } else {
+//         return true;
+//     }
+// }
 
 /**
  * @param {Number} n
@@ -80,6 +81,12 @@ function generateColSet(steps) {
     return colSet.sort((a,b) => a-b)
 }
 
+function findFirstMistake(set) {
+    for(let i = 0; i < set.length; i++) {
+        if(set[i]!=(i+1)) return console.log('C covers all natural numbers from 1 to ' + set[i-1])
+    }
+}
+
 /**
  * @param {Number[]} set
  * @param {Number} x 
@@ -88,9 +95,10 @@ function percentCovered(set, x) {
     return 100*set.filter(v => v<=x).length/x
 }
 
-let s = prompt("s=") // as s approaches infinity, C seems to approach N+1
+let s = prompt("s=") // as s approaches infinity, C seems to approach N+1, also after s=16 C seems to equal N+1 for all n<=s
 
 let set = generateColSet(s);
 
 console.log(set)
 console.log("Covers " + percentCovered(set, s) + "% of natural numbers from 1 to " + s)
+findFirstMistake(set)
