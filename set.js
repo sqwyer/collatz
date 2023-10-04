@@ -56,16 +56,27 @@ function inverseCol(n) {
 }
 
 /**
- * @param {Number} x
  * @param {Number} steps
  */
-function generateColSet(x, steps) {
-    let colSet = [];
-    if(doesReach1(x)) {
-        for(let n = x; n<steps; n++) {
-            inverseCol(n).forEach((i) => !colSet.includes(i) && doesReach1(i) && colSet.push(i))
+function generateColSet(steps) {
+    let colSet = [1];
+    let i = 0;
+
+    let loop = () => {
+        colSet.forEach(n => {
+            let inverse = inverseCol(n)
+            inverse.forEach(x => {
+                if(!colSet.includes(x)) colSet.push(x)
+            })
+        })
+        if(i < steps) {
+            i++;
+            loop();
         }
     }
+
+    loop()
+    
     return colSet.sort((a,b) => a-b)
 }
 
@@ -77,10 +88,9 @@ function percentCovered(set, x) {
     return 100*set.filter(v => v<=x).length/x
 }
 
-let n = prompt("n=") // this should be 1
 let s = prompt("s=") // as s approaches infinity, C seems to approach N+1
 
-let set = generateColSet(n,s);
+let set = generateColSet(s);
 
 console.log(set)
 console.log("Covers " + percentCovered(set, s) + "% of natural numbers from 1 to " + s)
